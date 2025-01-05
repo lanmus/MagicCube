@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资料 - Magic Cube</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Magic Cube</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/products.html">商品列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/product-upload.html">上传商品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api-docs.html">API 文档</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto" id="authNav"></ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        <div class="row">
+            <!-- 左侧导航 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="/static/images/avatar-placeholder.png" 
+                                 class="rounded-circle me-2" 
+                                 style="width: 48px; height: 48px;"
+                                 id="userAvatar"
+                                 alt="用户头像">
+                            <div>
+                                <h5 class="mb-0" id="userDisplayName">加载中...</h5>
+                                <small class="text-muted" id="userRole">普通用户</small>
+                            </div>
+                        </div>
+                        <div class="list-group">
+                            <a href="#profile" class="list-group-item list-group-item-action active" 
+                               data-bs-toggle="list">
+                                <i class="bi bi-person me-2"></i>基本信息
+                            </a>
+                            <a href="#security" class="list-group-item list-group-item-action" 
+                               data-bs-toggle="list">
+                                <i class="bi bi-shield-lock me-2"></i>安全设置
+                            </a>
+                            <a href="#uploads" class="list-group-item list-group-item-action" 
+                               data-bs-toggle="list">
+                                <i class="bi bi-cloud-upload me-2"></i>上传历史
+                            </a>
+                            <a href="#downloads" class="list-group-item list-group-item-action" 
+                               data-bs-toggle="list">
+                                <i class="bi bi-cloud-download me-2"></i>下载记录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <!-- 基本信息 -->
+                    <div class="tab-pane fade show active" id="profile">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">基本信息</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileForm" onsubmit="return handleUpdateProfile(event)">
+                                    <div class="mb-3">
+                                        <label class="form-label">头像</label>
+                                        <div class="d-flex align-items-center">
+                                            <img src="/static/images/avatar-placeholder.png" 
+                                                 class="rounded-circle me-3" 
+                                                 style="width: 100px; height: 100px;"
+                                                 id="avatarPreview"
+                                                 alt="头像预览">
+                                            <div>
+                                                <input type="file" class="form-control" 
+                                                       id="avatarInput" accept="image/*"
+                                                       onchange="previewAvatar(event)">
+                                                <div class="form-text">
+                                                    支持 jpg、png 格式，文件大小不超过 2MB
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">用户名</label>
+                                        <input type="text" class="form-control" id="username" 
+                                               name="username" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">邮箱</label>
+                                        <input type="email" class="form-control" id="email" 
+                                               name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bio" class="form-label">个人简介</label>
+                                        <textarea class="form-control" id="bio" name="bio" 
+                                                  rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">保存更改</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 安全设置 -->
+                    <div class="tab-pane fade" id="security">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">修改密码</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="passwordForm" onsubmit="return handleUpdatePassword(event)">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">当前密码</label>
+                                        <input type="password" class="form-control" 
+                                               id="currentPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">新密码</label>
+                                        <input type="password" class="form-control" 
+                                               id="newPassword" required minlength="8">
+                                        <div id="passwordStrength" class="form-text"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmNewPassword" class="form-label">确认新密码</label>
+                                        <input type="password" class="form-control" 
+                                               id="confirmNewPassword" required minlength="8">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">更新密码</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 上传历史 -->
+                    <div class="tab-pane fade" id="uploads">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">上传历史</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>商品名称</th>
+                                                <th>SPU编号</th>
+                                                <th>上传时间</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="uploadsTableBody">
+                                            <!-- 上传历史将通过JavaScript动态添加 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="uploadsPagination">
+                                        <!-- 分页将通过JavaScript动态添加 -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 下载记录 -->
+                    <div class="tab-pane fade" id="downloads">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">下载记录</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>商品名称</th>
+                                                <th>SPU编号</th>
+                                                <th>下载时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="downloadsTableBody">
+                                            <!-- 下载记录将通过JavaScript动态添加 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="downloadsPagination">
+                                        <!-- 分页将通过JavaScript动态添加 -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/profile.js"></script>
+</body>
+</html> 

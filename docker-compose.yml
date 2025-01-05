@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # Node.js 应用服务
+  app:
+    build: .
+    image: magic-cube-app
+    container_name: magic-cube-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/uploads:/app/public/uploads
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=2k699fw4
+      - DB_NAME=magic_cube
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mysql
+      - redis
+
+  # MySQL 数据库服务
+  mysql:
+    image: mysql:8.0
+    container_name: magic-cube-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=2k699fw4
+      - MYSQL_DATABASE=magic_cube
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_connections=1000
+      - --innodb_buffer_pool_size=1G
+
+  # Redis 缓存服务
+  redis:
+    image: redis:6-alpine
+    container_name: magic-cube-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+
+volumes:
+  mysql_data:
+  redis_data: 

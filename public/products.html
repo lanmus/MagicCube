@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品列表 - Magic Cube</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Magic Cube</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/products.html">商品列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/product-upload.html">上传商品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api-docs.html">API 文档</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto" id="authNav">
+                    <!-- 用户导航将通过 JavaScript 动态添加 -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        <!-- 搜索区域 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form id="searchForm" class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="searchKeyword" placeholder="搜索关键词">
+                            <label for="searchKeyword">搜索关键词</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating">
+                            <select class="form-select" id="searchGender">
+                                <option value="">全部</option>
+                                <option value="male">男装</option>
+                                <option value="female">女装</option>
+                                <option value="unisex">中性</option>
+                            </select>
+                            <label for="searchGender">性别</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating">
+                            <select class="form-select" id="searchAgeRange">
+                                <option value="">全部</option>
+                                <option value="adult">成人</option>
+                                <option value="youth">青少年</option>
+                                <option value="kids">儿童</option>
+                            </select>
+                            <label for="searchAgeRange">年龄段</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating">
+                            <select class="form-select" id="searchSort">
+                                <option value="createdAt_desc">最新上传</option>
+                                <option value="createdAt_asc">最早上传</option>
+                                <option value="name_asc">名称升序</option>
+                                <option value="name_desc">名称降序</option>
+                            </select>
+                            <label for="searchSort">排序</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> 搜索
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 搜索历史 -->
+        <div id="searchHistory" class="mb-4" style="display: none;">
+            <h6 class="mb-2">最近搜索</h6>
+            <div class="d-flex flex-wrap gap-2">
+                <!-- 搜索历史将通过JavaScript动态添加 -->
+            </div>
+        </div>
+
+        <!-- 搜索建议 -->
+        <div id="searchSuggestions" class="card mb-4" style="display: none;">
+            <div class="card-body">
+                <h6 class="mb-2">搜索建议</h6>
+                <div class="list-group list-group-flush">
+                    <!-- 搜索建议将通过JavaScript动态添加 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品列表 -->
+        <div id="productList" class="row">
+            <!-- 商品卡片将通过JavaScript动态添加 -->
+        </div>
+
+        <!-- 分页控件 -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination">
+                <!-- 分页按钮将通过JavaScript动态添加 -->
+            </ul>
+        </nav>
+
+        <!-- 新建商品按钮 -->
+        <div class="position-fixed bottom-0 end-0 m-4">
+            <a href="/product-upload.html" class="btn btn-success btn-lg rounded-circle">
+                <i class="bi bi-plus-lg"></i>
+            </a>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/products.js"></script>
+</body>
+</html> 
